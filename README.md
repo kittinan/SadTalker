@@ -210,6 +210,43 @@ Please read our document on [best practices and configuration tips](docs/best_pr
 python app_sadtalker.py
 ```
 
+### FastAPI service
+
+A local FastAPI service is also available for programmatic access:
+
+```bash
+uvicorn api:app --host 127.0.0.1 --port 8000
+```
+
+Health check:
+
+```bash
+curl http://127.0.0.1:8000/healthz
+```
+
+Create a job with multipart uploads:
+
+```bash
+curl -X POST http://127.0.0.1:8000/jobs \
+  -F source_image=@examples/source_image/full_body_1.png \
+  -F driven_audio=@examples/driven_audio/bus_chinese.wav \
+  -F preprocess=crop \
+  -F still_mode=false \
+  -F enhancer=none \
+  -F batch_size=2 \
+  -F size=256 \
+  -F pose_style=0
+```
+
+Poll job status and download the generated video:
+
+```bash
+curl http://127.0.0.1:8000/jobs/<job_id>
+curl -L http://127.0.0.1:8000/jobs/<job_id>/file --output result.mp4
+```
+
+The API is designed for local/dev use. Jobs run sequentially, results are stored under `results/api/`, and old job folders are cleaned up automatically after the configured retention window.
+
 You can also start it more easily:
 
 - windows: just double click `webui.bat`, the requirements will be installed automatically.

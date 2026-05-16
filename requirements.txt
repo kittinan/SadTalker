@@ -19,3 +19,6 @@ gradio
 gfpgan
 av
 safetensors
+fastapi
+uvicorn
+python-multipart
